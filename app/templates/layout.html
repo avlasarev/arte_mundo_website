@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Arte Mundo Logo" class="logo">
+            <h1>Arte Mundo</h1>
+            <form action="{{ url_for('search') }}" method="get">
+                <input type="text" name="query" placeholder="Търсене на обяви...">
+                <button type="submit">Търсене</button>
+            </form>
+            {% if current_user.is_authenticated %}
+                <div class="auth-links">
+                    {% if current_user.is_admin %}
+                        <a href="{{ url_for('add_property') }}">Добавяне на обява</a>
+                        <span>Добре дошли, Админ</span>
+                    {% else %}
+                        <span>Добре дошли, {{ current_user.username }}</span>
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}">Изход</a>
+                </div>
+            {% else %}
+                <div class="auth-links">
+                    <a href="{{ url_for('login') }}">Вход</a>
+                    <a href="{{ url_for('register') }}">Регистрация</a>
+                </div>
+            {% endif %}
+        </div>
+    </header>
+    <main>
+        <div class="agency-description">
+            <p>Добре дошли в Arte Mundo, вашият надежден партньор в недвижимите имоти. Агенцията е е изградена от екип с 20 годишен опит! Ние разбираме от недвижими имоти, вие изберете нас!</p>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <div class="container">
+            <p>Свържете се с нас: artemundo@abv.bg</p>
+            <p>Телефонен номер: 088 640 4540</p>
+            <p>Социални мрежи: https://www.facebook.com/ArteMundoLtd/</p>
+        </div>
+    </footer>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

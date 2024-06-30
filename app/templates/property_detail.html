@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="property-detail">
+    <h1>{{ property.title }}</h1>
+    <div id="propertyCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            {% for image in property.images %}
+            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                <img class="d-block w-100" src="{{ url_for('static', filename=image.image_url) }}" alt="{{ property.title }}">
+            </div>
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#propertyCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#propertyCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <div class="property-info">
+        <h2>Description</h2>
+        <p>{{ property.description }}</p>
+        <h2>Price</h2>
+        <p>{{ property.price }}</p>
+        <h2>Location</h2>
+        <p>{{ property.location }}</p>
+    </div>
+</div>
+{% endblock %}
